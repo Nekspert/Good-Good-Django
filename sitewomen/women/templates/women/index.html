@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ title }}</title>
+    <title>{{ title|capfirst|default:'NONE' }}</title>
 </head>
 <body>
 <p>{{ menu }}</p>
-<p>{{ float }}</p>
-<p>{{ lst }}</p>
+<p>{{ float|add:'50' }}</p>
+<p>{{ lst|join:' | ' }}</p>
 <p>{{ set }}</p>
 <p>{{ dict.key_1 }}</p>
 <p>{{obj.a}} {{obj.b}}</p>
+<p>{{ 'The Main Page'|slugify }}</p>
 
-<h1>{{ title }}</h1>
+<h1>{{title|cut:' '|cut:'?'}}</h1>
 </body>
 </html>
