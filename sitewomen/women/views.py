@@ -1,11 +1,15 @@
 from django.http import HttpResponse, HttpRequest, HttpResponseNotFound
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, render
 from django.urls import Resolver404
 from django.utils import timezone
 
 
 def index(request: HttpRequest):
-    return HttpResponse('This is the main page.')
+    return render(request, 'women/index.html')
+
+
+def about(request: HttpRequest):
+    return render(request, 'women/about.html')
 
 
 def categories_by_id(request: HttpRequest, cat_id: int):
