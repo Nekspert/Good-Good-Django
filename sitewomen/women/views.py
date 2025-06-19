@@ -1,4 +1,5 @@
-from django.http import HttpResponse, HttpRequest, HttpResponseNotFound, Http404
+from django.http import HttpResponse, HttpRequest, HttpResponseNotFound
+from django.shortcuts import redirect, reverse
 from django.urls import Resolver404
 from django.utils import timezone
 
@@ -19,7 +20,8 @@ def categories_by_slug(request: HttpRequest, cat_slug: str):
 
 def archive(request: HttpRequest, year: int):
     if year > int(timezone.now().year):
-        raise Http404()
+        uri = reverse('categories_by_id', args=('123',))
+        return redirect(uri, permanent=True)
     return HttpResponse(f'<h1>Archive by years: year: {year}</h1>')
 
 
