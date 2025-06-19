@@ -3,9 +3,27 @@ from django.shortcuts import redirect, reverse, render
 from django.urls import Resolver404
 from django.utils import timezone
 
+menu = ['О сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
-def index(request: HttpRequest):
-    return render(request, 'women/index.html')
+
+class MyClass:
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+
+
+def index(request):
+    data = {
+        'title': 'Главная страница',
+        'menu': menu,
+        'float': 28.56,
+        'lst': [1, 2, 'abc', True],
+        'set': {1, 1, 2, 3, 2, 5},
+        'dict': {'key_1': 'value_1', 'key_2': 'value_2'},
+        'obj': MyClass(10, 20),
+    }
+
+    return render(request, 'women/index.html', context=data)
 
 
 def about(request: HttpRequest):
