@@ -4,7 +4,7 @@ html, body {
     padding: 0;
     height: 100%;
     width: 100%;
-    color: #444;
+    color: #888;
 }
 
 a {
@@ -13,7 +13,7 @@ a {
 }
 
 a:hover {
-    color: #CC0000;
+    color: darkviolet;
     text-decoration: underline;
 }
 
@@ -41,7 +41,7 @@ p.link-read-post {
 p.link-read-post a {
     padding: 10px;
     min-width: 100px;
-    background: #333671;
+    background: darkseagreen;
     color: #fff;
     text-decoration: none;
 }
@@ -51,7 +51,7 @@ div.article-panel {
     padding: 5px 10px 5px 10px;
     box-sizing: border-box;
     overflow: hidden;
-    color: #555;
+    color: #222555;
 }
 
 div.article-panel p.first {
@@ -89,12 +89,12 @@ ul.list-articles li {
 }
 
 .header {
-    background: #3F4137;
+    background: #333671;
     height: 60px;
 }
 
 .logo {
-    background: url('../images/logo.png') no-repeat 10px 5px;
+    background: url('../images/logo.png') no-repeat;
     width: 70px;
     height: 60px;
 }
@@ -104,7 +104,7 @@ ul.mainmenu {
     margin: 0;
     padding: 0;
     height: 60px;
-    color: #fdc073;
+    color: #fde673;
     font-size: 20px;
     overflow: hidden;
 }
@@ -213,12 +213,12 @@ div.button {
 }
 
 .left-chapters ul li a {
-    color: #444;
+    color: #555;
     text-decoration: none;
 }
 
 .left-chapters ul li a:hover {
-    color: #CC0000;
+    color: royalblue;
 }
 
 .left-chapters ul li.share {
@@ -394,7 +394,7 @@ ul.lang-list li a:hover {
 .topic-subject .topic-text {
     display: inline-block;
     font-size: 28px;
-    color: #777;
+    color: #888;
     padding: 0 10px 0 10px;
     margin-left: 30px;
     background: #fff;
@@ -464,7 +464,7 @@ ul.lang-list li a:hover {
 #footer {
     box-sizing: border-box;
 
-    background: #3F4137;
+    background: #333671;
     padding: 5px;
     color: #aaa;
     font-size: 14px;
