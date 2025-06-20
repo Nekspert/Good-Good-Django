@@ -4,15 +4,22 @@
     <title>{{ title|capfirst|default:'NONE' }}</title>
 </head>
 <body>
-<p>{{ menu|join:" | " }}</p>
 <h1>{{ title }}</h1>
-
+<h2>Menu:</h2>
+<ul>
+    {% for m in menu %}
+    {% if forloop.last %}<li class="last">{% else %}<li>{% endif %}
+        <a href="{% url m.url_name %}">{{ m.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
 <ul>
     {% for p in posts %}
     {% if p.is_published %}
     <li>
         <h2>{{ p.title }}</h2>
         <p>{{ p.content }}</p>
+        <a href="{% url 'post' p.id %}">Читать пост</a>
         {% if not forloop.last %}
         <hr>
         {% endif %}
