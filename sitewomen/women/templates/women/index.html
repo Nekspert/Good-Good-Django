@@ -4,14 +4,21 @@
     <title>{{ title|capfirst|default:'NONE' }}</title>
 </head>
 <body>
-<p>{{ menu }}</p>
-<p>{{ float|add:'50' }}</p>
-<p>{{ lst|join:' | ' }}</p>
-<p>{{ set }}</p>
-<p>{{ dict.key_1 }}</p>
-<p>{{obj.a}} {{obj.b}}</p>
-<p>{{ 'The Main Page'|slugify }}</p>
+<p>{{ menu|join:" | " }}</p>
+<h1>{{ title }}</h1>
 
-<h1>{{title|cut:' '|cut:'?'}}</h1>
+<ul>
+    {% for p in posts %}
+    {% if p.is_published %}
+    <li>
+        <h2>{{ p.title }}</h2>
+        <p>{{ p.content }}</p>
+        {% if not forloop.last %}
+        <hr>
+        {% endif %}
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
 </body>
 </html>
