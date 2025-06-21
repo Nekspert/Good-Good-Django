@@ -11,7 +11,7 @@ class Women(models.Model):
     class Meta:
         ordering = ['-time_create']
         indexes = [
-            models.Index(fields='-time_create'),
+            models.Index(fields=['-time_create']),
         ]
 
     def __str__(self):
