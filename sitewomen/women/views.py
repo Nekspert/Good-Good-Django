@@ -1,6 +1,8 @@
 from django.http import HttpResponse, HttpRequest, HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import Resolver404
+
+from .models import Women
 
 menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Добавить статью", 'url_name': 'add_page'},
@@ -21,11 +23,11 @@ cats_db = [
 ]
 
 def index(request: HttpRequest):
+    posts = Women.objects.filter(is_published=True)
     data = {
         'title': 'Главная страница',
         'menu': menu,
-        'posts': data_db,
-        'cat_selected': 0
+        'posts': posts
     }
 
     return render(request, 'women/index.html', context=data)
@@ -35,9 +37,16 @@ def about(request: HttpRequest):
     return render(request, 'women/about.html', {'title': 'О сайте', 'menu': menu})
 
 
-def show_post(request: HttpRequest, post_id: int):
-    return HttpResponse(f'Displaying page with post_id = {post_id}')
+def show_post(request: HttpRequest, post_slug: str):
+    post = get_object_or_404(Women, slug=post_slug)
 
+    data = {
+        'title': post.title,
+        'menu': menu,
+        'post': post,
+        'cat_selected': 1,
+    }
+    return render(request, 'women/post.html', context=data)
 
 def addpage(request: HttpRequest):
     return HttpResponse('Add article')
