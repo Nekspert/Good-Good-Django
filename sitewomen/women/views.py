@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 from django.urls import Resolver404
 
-from .models import Women
+from .models import Category, Women
 
 
 menu = [{'title': "О сайте", 'url_name': 'about'},
@@ -10,11 +10,6 @@ menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Обратная связь", 'url_name': 'contact'},
         {'title': "Войти", 'url_name': 'login'}
         ]
-cats_db = [
-    {'id': 1, 'name': 'Актрисы'},
-    {'id': 2, 'name': 'Певицы'},
-    {'id': 3, 'name': 'Спортсменки'},
-]
 
 
 def index(request: HttpRequest):
@@ -56,12 +51,14 @@ def login(request: HttpRequest):
     return HttpResponse('Authorization')
 
 
-def show_category(request: HttpRequest, cat_id: int):
+def show_category(request: HttpRequest, cat_slug: str):
+    category = get_object_or_404(Category, slug=cat_slug)
+    posts = Women.published.filter(cat_id=category.pk)
     data = {
         'title': 'Главная страница',
         'menu': menu,
-        'posts': Women.published.all(),
-        'cat_selected': cat_id
+        'posts': posts,
+        'cat_selected': category.pk
     }
 
     return render(request, 'women/index.html', context=data)
