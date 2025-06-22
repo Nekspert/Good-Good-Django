@@ -2,19 +2,31 @@ from django.db import models
 from django.urls import reverse
 
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super(PublishedManager, self).get_queryset().filter(is_published=Women.Status.PUBLISHED)
+
+
 class Women(models.Model):
+    class Status(models.IntegerChoices):
+        DRAFT = 0, 'Черновик'
+        PUBLISHED = 1, 'Опубликовано'
+
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, unique=True)
     content = models.TextField(blank=True)
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
-    is_published = models.BooleanField(default=True)
+    is_published = models.BooleanField(choices=Status.choices, default=Status.DRAFT)
 
     class Meta:
         ordering = ['-time_create']
         indexes = [
             models.Index(fields=['-time_create']),
         ]
+
+    objects = models.Manager()
+    published = PublishedManager()
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
