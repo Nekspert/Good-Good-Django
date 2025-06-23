@@ -499,3 +499,22 @@ ul.lang-list li a:hover {
     min-width: 200px;
     font-size: 16px;
 }
+
+ul.tags-list {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.tags-list li {
+    margin: 0;
+    padding: 0 0 10px;
+    display: inline-block;
+}
+
+ul.tags-list li a {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #aaa;
+}
