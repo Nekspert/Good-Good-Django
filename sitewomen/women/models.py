@@ -23,6 +23,8 @@ class Women(models.Model):
     husband = models.OneToOneField('Husband', on_delete=models.SET_NULL, null=True, blank=True, related_name='women')
 
     class Meta:
+        verbose_name = 'Famous woman'
+        verbose_name_plural = 'Famous women'
         ordering = ['-time_create']
         indexes = [
             models.Index(fields=['-time_create']),
