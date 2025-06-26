@@ -15,9 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 
 from women.views import page_not_found
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,3 +27,5 @@ urlpatterns = [
 ]
 
 handler404 = page_not_found
+admin.site.site_header = 'Django [Nekspert] administration'
+admin.site.index_title = 'World famous women'
