@@ -1,0 +1,11 @@
+#header, .module caption, #changelist-filter h2{
+    background: #333671;
+}
+
+div.breadcrumbs {
+    background: #335999;
+}
+
+table tbody tr.current-model {
+    background: rebeccapurple !important;
+}
