@@ -2,6 +2,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 from django.urls import Resolver404
 
+from .forms import AddPostForm
 from .models import Category, TagPost, Women
 
 
@@ -41,7 +42,18 @@ def show_post(request: HttpRequest, post_slug: str):
 
 
 def addpage(request: HttpRequest):
-    return render(request, 'women/addpage.html', {'menu': menu, 'title': 'Добавление статьи'})
+    if request.method == 'POST':
+        form = AddPostForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+    else:
+        form = AddPostForm()
+    data = {
+        'menu': menu,
+        'title': 'Добавление статьи',
+        'form': form
+    }
+    return render(request, 'women/addpage.html', data)
 
 
 def contact(request: HttpRequest):
