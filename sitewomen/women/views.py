@@ -46,11 +46,13 @@ def addpage(request: HttpRequest):
     if request.method == 'POST':
         form = AddPostForm(request.POST)
         if form.is_valid():
-            try:
-                Women.objects.create(**form.cleaned_data)
-                return redirect('home')
-            except django.db.utils.IntegrityError:
-                form.add_error(None, 'Ошибка добавления поста')
+            # try:
+            #     Women.objects.create(**form.cleaned_data)
+            #     return redirect('home')
+            # except django.db.utils.IntegrityError:
+            #     form.add_error(None, 'Ошибка добавления поста')
+            form.save()
+            return redirect('home')
     else:
         form = AddPostForm()
     data = {
