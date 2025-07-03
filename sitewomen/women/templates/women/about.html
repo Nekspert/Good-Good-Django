@@ -2,5 +2,9 @@
 
 {% block content %}
 <h1>{{title}}</h1>
-<p>Содержимое страницы о сайте
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Send</button>
+</form>
 {% endblock %}
