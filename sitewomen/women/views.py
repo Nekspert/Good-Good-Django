@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import Resolver404
 
 from .forms import AddPostForm, UploadFileForm
-from .models import Category, TagPost, Women
+from .models import Category, TagPost, UploadFiles, Women
 
 
 menu = [{'title': "О сайте", 'url_name': 'about'},
@@ -25,17 +25,18 @@ def index(request: HttpRequest):
     return render(request, 'women/index.html', context=data)
 
 
-def handle_upload_file(f):
-    with open(f'uploads/{f.name}', mode='wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
+# def handle_upload_file(f):
+#     with open(f'uploads/{f.name}', mode='wb+') as destination:
+#         for chunk in f.chunks():
+#             destination.write(chunk)
 
 
 def about(request: HttpRequest):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_upload_file(form.cleaned_data['file'])
+            fp = UploadFiles(file=form.cleaned_data['file'])
+            fp.save()
     else:
         form = UploadFileForm()
     return render(request, 'women/about.html',
@@ -56,7 +57,7 @@ def show_post(request: HttpRequest, post_slug: str):
 
 def addpage(request: HttpRequest):
     if request.method == 'POST':
-        form = AddPostForm(request.POST)
+        form = AddPostForm(request.POST, request.FILES)
         if form.is_valid():
             # try:
             #     Women.objects.create(**form.cleaned_data)
