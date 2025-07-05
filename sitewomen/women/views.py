@@ -1,6 +1,8 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import Resolver404
+from django.views import View
+from django.views.generic import TemplateView
 
 from .forms import AddPostForm, UploadFileForm
 from .models import Category, TagPost, UploadFiles, Women
@@ -13,16 +15,22 @@ menu = [{'title': "О сайте", 'url_name': 'about'},
         ]
 
 
-def index(request: HttpRequest):
-    posts = Women.published.all().select_related('cat')
-    data = {
+class WomenHome(TemplateView):
+    template_name = 'women/index.html'
+    extra_context = {
         'title': 'Главная страница',
         'menu': menu,
-        'posts': posts,
+        'posts': Women.published.all().select_related('cat'),
         'cat_selected': 0,
     }
 
-    return render(request, 'women/index.html', context=data)
+    # def get_context_data(self, **kwargs):
+    #     context = super(WomenHome, self).get_context_data(**kwargs)
+    #     context['title'] = 'Главная страница'
+    #     context['menu'] = menu
+    #     context['posts'] = Women.published.all().select_related('cat')
+    #     context['cat_selected'] = self.request.GET.get('cat_id', 0)
+    #     return context
 
 
 # def handle_upload_file(f):
@@ -55,25 +63,27 @@ def show_post(request: HttpRequest, post_slug: str):
     return render(request, 'women/post.html', context=data)
 
 
-def addpage(request: HttpRequest):
-    if request.method == 'POST':
+class AddPage(View):
+    def get(self, request: HttpRequest):
+        form = AddPostForm()
+        data = {
+            'menu': menu,
+            'title': 'Добавление статьи',
+            'form': form
+        }
+        return render(request, 'women/addpage.html', data)
+
+    def post(self, request: HttpRequest):
         form = AddPostForm(request.POST, request.FILES)
         if form.is_valid():
-            # try:
-            #     Women.objects.create(**form.cleaned_data)
-            #     return redirect('home')
-            # except django.db.utils.IntegrityError:
-            #     form.add_error(None, 'Ошибка добавления поста')
             form.save()
             return redirect('home')
-    else:
-        form = AddPostForm()
-    data = {
-        'menu': menu,
-        'title': 'Добавление статьи',
-        'form': form
-    }
-    return render(request, 'women/addpage.html', data)
+        data = {
+            'menu': menu,
+            'title': 'Добавление статьи',
+            'form': form
+        }
+        return render(request, 'women/addpage.html', data)
 
 
 def contact(request: HttpRequest):
