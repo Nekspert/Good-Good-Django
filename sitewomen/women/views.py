@@ -125,15 +125,14 @@ class WomenTagList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(WomenTagList, self).get_context_data(**kwargs)
-        tag = get_object_or_404(TagPost, slug=self.kwargs['tag_slug'])
+        tag = TagPost.objects.get(slug=self.kwargs['tag_slug'])
         context['title'] = f'Тег: {tag.tag}'
         context['menu'] = menu
         context['cat_selected'] = None
         return context
 
     def get_queryset(self):
-        tag = get_object_or_404(TagPost, slug=self.kwargs['tag_slug'])
-        return tag.tags.filter(is_published=Women.Status.PUBLISHED).select_related('cat')
+        return Women.published.filter(tags__slug=self.kwargs['tag_slug']).select_related('cat')
 
 
 def page_not_found(request: HttpRequest, exception: Resolver404):
