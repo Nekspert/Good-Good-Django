@@ -8,9 +8,9 @@ register = template.Library()
 
 
 @register.inclusion_tag(filename='women/list_categories.html')
-def show_categories(cats_selected=0):
+def show_categories(cat_selected=0):
     cats = Category.objects.annotate(total=Count('women')).filter(total__gt=0)
-    return {'cats': cats, 'cats_selected': cats_selected}
+    return {'cats': cats, 'cat_selected': int(cat_selected)}
 
 
 @register.inclusion_tag(filename='women/list_tags.html')
