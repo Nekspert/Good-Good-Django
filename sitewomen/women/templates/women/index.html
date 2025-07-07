@@ -19,7 +19,10 @@
         {{ p.content|linebreaks|truncatewords:40 }}
         {% endautoescape %}
         <div class="clear"></div>
-        <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+        <div class="my-align">
+            <p class="link-edit-post"><a href="{% url 'edit-page' p.pk %}">Редактировать пост</a></p>
+            <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+        </div>
     </li>
     {% endif %}
     {% endfor %}
