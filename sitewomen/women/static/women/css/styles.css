@@ -34,8 +34,26 @@ img.img-article-left.thumb {
     height: auto;
 }
 
+p.link-read-post,
+p.link-edit-post {
+    display: inline-block;
+    margin-left: 10px;
+}
+
 p.link-read-post {
     text-align: right;
+}
+
+p.link-edit-post {
+    text-align: right;
+}
+
+p.link-edit-post a {
+    padding: 10px;
+    min-width: 100px;
+    background: darkcyan;
+    color: #fff;
+    text-decoration: none;
 }
 
 p.link-read-post a {
@@ -68,6 +86,10 @@ ul.list-articles {
     list-style: none;
     margin: 0;
     padding: 0;
+}
+
+div.my-align {
+    text-align: right;
 }
 
 ul.list-articles li {
