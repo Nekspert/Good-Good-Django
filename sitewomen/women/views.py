@@ -1,10 +1,11 @@
+from django.core.paginator import Paginator
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 from django.urls import Resolver404, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
-from .forms import AddPostForm, UploadFileForm
-from .models import TagPost, UploadFiles, Women
+from .forms import AddPostForm
+from .models import TagPost, Women
 from .utils import DataMixin
 
 
@@ -26,15 +27,13 @@ class WomenHome(DataMixin, ListView):
 
 
 def about(request: HttpRequest):
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            fp = UploadFiles(file=form.cleaned_data['file'])
-            fp.save()
-    else:
-        form = UploadFileForm()
+    women = Women.published.all()
+    paginator = Paginator(women, 3)
+
+    page_num = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_num)
     return render(request, 'women/about.html',
-                  {'title': 'О сайте', 'form': form})
+                  {'title': 'О сайте', 'page_obj': page_obj})
 
 
 class ShowPost(DataMixin, DetailView):
