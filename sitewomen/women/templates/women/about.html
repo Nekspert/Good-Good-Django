@@ -2,9 +2,17 @@
 
 {% block content %}
 <h1>{{title}}</h1>
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Send</button>
-</form>
+{% for item in page_obj %}
+<p>{{ item.pk }}: {{ item.title }}</p>
+{% endfor %}
+
+<nav>
+    <ul>
+        {% for page_num in page_obj.paginator.page_range %}
+        <li style="display: inline; margin-right: 10px;">
+            <a href="?page={{ page_num }}">{{ page_num }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
 {% endblock %}
