@@ -25,6 +25,7 @@ from .settings import DEBUG, MEDIA_ROOT, MEDIA_URL
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('women.urls')),
+    path('users/', include('users.urls', namespace='users')),
     path('__debug__/', include('debug_toolbar.urls'))
 ]
 if DEBUG:
