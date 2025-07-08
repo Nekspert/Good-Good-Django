@@ -3,7 +3,6 @@ from django.http import HttpRequest, HttpResponsePermanentRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from women.utils import menu
 from .forms import LoginUserForm
 
 
@@ -18,7 +17,7 @@ def login_user(request: HttpRequest):
                 return HttpResponsePermanentRedirect(reverse('home'))
     else:
         form = LoginUserForm()
-    return render(request, 'users/login.html', {'form': form, 'menu': menu})
+    return render(request, 'users/login.html', {'form': form})
 
 
 def logout_user(request: HttpRequest):
