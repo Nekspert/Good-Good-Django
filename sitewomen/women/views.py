@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
@@ -26,6 +28,7 @@ class WomenHome(DataMixin, ListView):
 #             destination.write(chunk)
 
 
+@login_required
 def about(request: HttpRequest):
     women = Women.published.all()
     paginator = Paginator(women, 3)
@@ -49,11 +52,16 @@ class ShowPost(DataMixin, DetailView):
         return get_object_or_404(Women.published, slug=self.kwargs[self.slug_url_kwarg])
 
 
-class AddPage(DataMixin, CreateView):
+class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPostForm
     template_name = 'women/addpage.html'
     success_url = reverse_lazy('home')  # get_absolute_url
     title_page = 'Добавление статьи'
+
+    def form_valid(self, form):
+        w = form.save(commit=False)
+        w.author = self.request.user
+        return super(AddPage, self).form_valid(form)
 
 
 class UpdatePage(DataMixin, UpdateView):

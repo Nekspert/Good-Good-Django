@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
@@ -39,6 +40,8 @@ class Women(models.Model):
     tags = models.ManyToManyField('TagPost', blank=True, related_name='tags', verbose_name='Теги')
     husband = models.OneToOneField('Husband', on_delete=models.SET_NULL, null=True, blank=True, related_name='women',
                                    verbose_name='Муж')
+    author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, default=None,
+                               related_name='posts')
 
     class Meta:
         verbose_name = 'Famous woman'
@@ -53,10 +56,6 @@ class Women(models.Model):
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
-
-    # def save(self, *args, **kwargs):
-    #     self.slug = slugify(translit_to_eng(self.title))
-    #     super(Women, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
