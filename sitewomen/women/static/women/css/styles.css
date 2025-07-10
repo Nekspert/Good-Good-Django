@@ -585,3 +585,7 @@ ul.tags-list li a {
 .list-pages .page-num-selected:hover {
     box-shadow: none;
 }
+
+p.link-edit-post-admin a {
+  background: red;
+}
