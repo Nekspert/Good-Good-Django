@@ -64,12 +64,17 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
         return super(AddPage, self).form_valid(form)
 
 
-class UpdatePage(DataMixin, UpdateView):
+class UpdatePage(LoginRequiredMixin, DataMixin, UpdateView):
     model = Women
     fields = ['title', 'content', 'photo', 'is_published', 'cat']
     template_name = 'women/addpage.html'
     success_url = reverse_lazy('home')
     title_page = 'Редактирование статьи'
+
+    def get_queryset(self):
+        if self.request.user.pk == 1:
+            return Women.published.all()
+        return Women.published.filter(author=self.request.user)
 
 
 def contact(request: HttpRequest):
