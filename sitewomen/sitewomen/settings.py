@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
 from pathlib import Path
+
+from environs import Env
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -144,7 +145,7 @@ AUTHENTICATION_BACKENDS = [
     'users.authentication.EmailAuthBackend',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 LANGUAGES = [
     ('en', 'English'),
@@ -154,3 +155,15 @@ LANGUAGES = [
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
+
+env = Env()
+env.read_env()
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SEVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = env.str('EMAIL_ADMIN')
