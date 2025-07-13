@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Permission
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -23,12 +24,13 @@ class RegisterUser(CreateView):
     template_name = 'users/register.html'
     extra_context = {'title': 'Регистрация'}
 
-    # success_url = reverse_lazy('users:login')
-
     def form_valid(self, form):
         user = form.save(commit=False)
         user.set_password(form.cleaned_data['password1'])
         user.save()
+        codenames = ['add_women', 'change_women', 'delete_women', 'view_women']
+        perms = Permission.objects.filter(codename__in=codenames)
+        user.user_permissions.set(perms)
 
         return render(self.request, 'users/register_done.html')
 
