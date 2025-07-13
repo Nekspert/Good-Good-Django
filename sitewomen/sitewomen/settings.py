@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'women.apps.WomenConfig',
     'users.apps.UsersConfig',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -143,6 +144,7 @@ LOGIN_URL = 'users:login'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'users.authentication.EmailAuthBackend',
+    'social_core.backends.github,.GithubOAuth2'
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
