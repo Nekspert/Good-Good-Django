@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.paginator import Paginator
-from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
+from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import Resolver404, reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from .forms import AddPostForm
 from .models import TagPost, Women
@@ -39,10 +39,11 @@ def about(request: HttpRequest):
                   {'title': 'О сайте', 'page_obj': page_obj})
 
 
-class ShowPost(DataMixin, DetailView):
+class ShowPost(PermissionRequiredMixin, DataMixin, DetailView):
     template_name = 'women/post.html'
     context_object_name = 'post'
     slug_url_kwarg = 'post_slug'
+    permission_required = 'women.view_women'
 
     def get_context_data(self, **kwargs):
         context = super(ShowPost, self).get_context_data(**kwargs)
@@ -52,11 +53,24 @@ class ShowPost(DataMixin, DetailView):
         return get_object_or_404(Women.published, slug=self.kwargs[self.slug_url_kwarg])
 
 
-class AddPage(LoginRequiredMixin, DataMixin, CreateView):
+class DeletePage(PermissionRequiredMixin, DeleteView):
+    model = Women
+    slug_url_kwarg = 'post_slug'
+    success_url = reverse_lazy('home')
+    permission_required = 'women.delete_women'
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        obj.delete()
+        return HttpResponsePermanentRedirect(reverse_lazy('home'))
+
+
+class AddPage(PermissionRequiredMixin, DataMixin, CreateView):
     form_class = AddPostForm
     template_name = 'women/addpage.html'
     success_url = reverse_lazy('home')  # get_absolute_url
     title_page = 'Добавление статьи'
+    permission_required = 'women.add_women'
 
     def form_valid(self, form):
         w = form.save(commit=False)
@@ -64,17 +78,14 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
         return super(AddPage, self).form_valid(form)
 
 
-class UpdatePage(LoginRequiredMixin, DataMixin, UpdateView):
+class UpdatePage(PermissionRequiredMixin, DataMixin, UpdateView):
     model = Women
     fields = ['title', 'content', 'photo', 'is_published', 'cat']
     template_name = 'women/addpage.html'
     success_url = reverse_lazy('home')
     title_page = 'Редактирование статьи'
-
-    def get_queryset(self):
-        if self.request.user.pk == 1:
-            return Women.published.all()
-        return Women.published.filter(author=self.request.user)
+    permission_required = 'women.change_women'
+    slug_url_kwarg = 'post_slug'
 
 
 def contact(request: HttpRequest):

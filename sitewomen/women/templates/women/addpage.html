@@ -9,7 +9,13 @@
     <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
     <div class="form-error">{{ f.errors }}</div>
     {% endfor %}
-    <p><button type="submit">Send</button></p>
+    <p>
+        <button type="submit">Send</button>
+    </p>
 </form>
-
+{% if form.instance.slug and perms.women.delete_women %}
+<p>
+    <a href="{% url 'delete_page' form.instance.slug %}">Удалить статью</a>
+</p>
+{% endif %}
 {% endblock %}

@@ -20,10 +20,10 @@
         {% endautoescape %}
         <div class="clear"></div>
         <div class="my-align">
-            {% if user == p.author %}
-            <p class="link-edit-post"><a href="{% url 'edit-page' p.pk %}">Редактировать пост</a></p>
-            {% elif user.pk == 1 %}
-            <p class="link-edit-post link-edit-post-admin"><a href="{% url 'edit-page' p.pk %}">Редактировать пост</a></p>
+            {% if user == p.author and perms.women.change_women %}
+            <p class="link-edit-post"><a href="{% url 'edit-page' p.slug %}">Редактировать пост</a></p>
+            {% elif user.is_stuff and perms.women.change_women or user.is_superuser %}
+            <p class="link-edit-post link-edit-post-admin"><a href="{% url 'edit-page' p.slug %}">Редактировать пост</a></p>
             {% endif %}
             <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
         </div>
