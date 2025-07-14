@@ -144,7 +144,8 @@ LOGIN_URL = 'users:login'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'users.authentication.EmailAuthBackend',
-    'social_core.backends.github.GithubOAuth2'
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.vk.VKOAuth2',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -185,3 +186,5 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
     'users.pipeline.new_users_handler',
 )
+SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('SOCIAL_AUTH_VK_OAUTH2_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('SOCIAL_AUTH_VK_OAUTH2_SECRET')
