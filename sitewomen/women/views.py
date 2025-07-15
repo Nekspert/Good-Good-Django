@@ -5,6 +5,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, HttpRes
 from django.shortcuts import get_object_or_404, render
 from django.urls import Resolver404, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
+from django.core.cache import cache
 
 from .forms import AddPostForm, ContactForm
 from .models import TagPost, Women
@@ -19,7 +20,11 @@ class WomenHome(DataMixin, ListView):
     cat_selected = 0
 
     def get_queryset(self):
-        return Women.published.all().select_related('cat')
+        w_list = cache.get('women_posts')
+        if not w_list:
+            w_list = Women.published.all().select_related('cat')
+            cache.set('women_posts', w_list, 30)
+        return w_list
 
 
 # def handle_upload_file(f):
