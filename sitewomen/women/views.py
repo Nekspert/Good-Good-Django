@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import Resolver404, reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
-from .forms import AddPostForm
+from .forms import AddPostForm, ContactForm
 from .models import TagPost, Women
 from .utils import DataMixin
 
@@ -88,8 +88,14 @@ class UpdatePage(PermissionRequiredMixin, DataMixin, UpdateView):
     slug_url_kwarg = 'post_slug'
 
 
-def contact(request: HttpRequest):
-    return HttpResponse('Feedback')
+class ContactFormView(LoginRequiredMixin, DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'women/contact.html'
+    success_url = reverse_lazy('home')
+    title_page = 'Обратная связь'
+
+    def form_valid(self, form):
+        return super(ContactFormView, self).form_valid(form)
 
 
 def login(request: HttpRequest):
