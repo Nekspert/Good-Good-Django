@@ -1,9 +1,9 @@
 from http import HTTPStatus
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from users.models import User
 from women.models import Women
 
 
@@ -12,7 +12,7 @@ class GetPagesTestCase(TestCase):
 
     def setUp(self):
         """Инициализация перед выполнением каждого теста"""
-        self.user = User.objects.create_superuser(
+        self.user = get_user_model().objects.create_superuser(
                 username='neksper',
                 password='1234'
         )
