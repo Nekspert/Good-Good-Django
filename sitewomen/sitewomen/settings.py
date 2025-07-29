@@ -24,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9pyvoajx=p_pw$6q@f@qfmx_ina@pou=odcg(7&dqaw-i)ckp-'
+SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sitewomen.ru']
+ALLOWED_HOSTS = env.str('DJANGO_ALLOWED_HOSTS').split()
 INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
@@ -109,7 +109,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": env.str('REDIS_URL', "redis://127.0.0.1:6379"),
     }
 }
 
@@ -146,9 +146,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+STATIC_ROOT = BASE_DIR / 'static/'
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
